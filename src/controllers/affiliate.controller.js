@@ -10,10 +10,14 @@ export const createAffiliateProduct = async (req, res, next) => {
       .status(201)
       .json(ApiResponse.created(doc, "Affiliate product created"));
   } catch (err) {
-    // Catch Mongoose validation / cast errors
-    if (err.name === "ValidationError") {
-      return next(new ApiError(400, "Invalid payload", err.errors));
+    // Mongo duplicate index fallback
+    if (err.code === 11000) {
+      return next(
+        new ApiError(
+          409, `Affiliate product with this ASIN :${req.body.payload?.Asin} already exists`)
+      );
     }
+   
     next(err);
   }
 };
