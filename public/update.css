@@ -1,0 +1,262 @@
+/* ------------------------------
+   GOOGLE FONTS
+-------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap");
+
+/* ------------------------------
+   CSS RESET
+-------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ------------------------------
+   BASE
+-------------------------------- */
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(180deg, #f8fafc, #eef2f7);
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* ------------------------------
+   LAYOUT
+-------------------------------- */
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+/* ------------------------------
+   TITLES
+-------------------------------- */
+h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1rem;
+  letter-spacing: 0.3px;
+}
+
+/* ------------------------------
+   ASIN INPUT (PRIMARY FIELD)
+-------------------------------- */
+#asin {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+
+  padding: 0.8rem 0.85rem;
+  height: 48px;
+
+  border-radius: 12px;
+  border: 2px solid #c7d2fe;
+  background: linear-gradient(180deg, #ffffff, #f8faff);
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+/* ASIN FOCUS (STRONG VISUAL CUE) */
+#asin:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.25),
+    0 12px 28px rgba(37, 99, 235, 0.35);
+}
+
+/* OPTIONAL: SEARCH FORM EMPHASIS */
+#searchForm {
+  border-left: 4px solid #2563eb;
+}
+
+
+/* ------------------------------
+   FORM CONTAINER
+-------------------------------- */
+form {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ------------------------------
+   SEARCH FORM
+-------------------------------- */
+#searchForm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+#searchForm label {
+  grid-column: 1 / -1;
+}
+
+/* ------------------------------
+   FIELD GRID
+-------------------------------- */
+#fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
+/* ------------------------------
+   FIELD BLOCK
+-------------------------------- */
+#fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* ------------------------------
+   LABELS
+-------------------------------- */
+label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+/* ------------------------------
+   INPUTS
+-------------------------------- */
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #111827;
+
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+/* ------------------------------
+   PLACEHOLDER
+-------------------------------- */
+input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+/* ------------------------------
+   FOCUS STATE (HIGH VISIBILITY)
+-------------------------------- */
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #f9fbff;
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.18),
+    0 6px 14px rgba(37, 99, 235, 0.12);
+}
+
+/* ------------------------------
+   CHECKBOX
+-------------------------------- */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+}
+
+/* ------------------------------
+   BUTTONS
+-------------------------------- */
+button {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+
+  padding: 0.6rem 1.3rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+button:hover {
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.3);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* ------------------------------
+   UPDATE BUTTON POSITION
+-------------------------------- */
+#updateForm button {
+  margin-top: 0.75rem;
+  align-self: flex-start;
+}
+
+/* ------------------------------
+   STATUS TEXT
+-------------------------------- */
+.status {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #047857;
+}
+
+/* ------------------------------
+   UTILITIES
+-------------------------------- */
+.hidden {
+  display: none;
+}
+
+/* ------------------------------
+   RESPONSIVE (TABLET+)
+-------------------------------- */
+@media (min-width: 640px) {
+  #fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}

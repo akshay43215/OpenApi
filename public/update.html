@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Update Affiliate Product</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet"  href="/public/update.css" />
+</head>
+<body>
+  <main class="container">
+    <h2>Update Product</h2>
+
+    <!-- Search -->
+    <form id="searchForm">
+      <label for="asin">ASIN</label>
+      <input id="asin" required />
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- Dynamic Update Form -->
+    <form id="updateForm" class="hidden">
+      <div id="fields"></div>
+      <button type="submit">Update</button>
+    </form>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <script src="/public/update.js"></script>
+</body>
+</html>

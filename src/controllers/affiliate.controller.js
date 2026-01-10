@@ -80,3 +80,53 @@ export const getLatestAffiliateProduct = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getAffiliateByAsin = async (req, res, next) => {
+  try {
+    const asin = req.params.asin.trim().toUpperCase();
+
+    const doc = await AffiliateProduct.findOne({ asin }).lean();
+
+    if (!doc) {
+      return next(new ApiError(404, "Product not found"));
+    }
+
+    res.status(200).json(ApiResponse.ok(doc));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateAffiliateProduct = async (req, res, next) => {
+  try {
+    const asin = req.params.asin.trim().toUpperCase();
+    const incomingPayload = req.body.payload;
+
+    if (!incomingPayload || typeof incomingPayload !== "object") {
+      return next(new ApiError(400, "payload object required"));
+    }
+
+    const existing = await AffiliateProduct.findOne({ asin });
+
+    if (!existing) {
+      return next(new ApiError(404, "Product not found"));
+    }
+
+    // Merge only modified fields
+    const updatedPayload = {
+      ...existing.payload,
+      ...incomingPayload,
+    };
+
+    existing.payload = updatedPayload;
+
+    await existing.save();
+
+    res.status(200).json(
+      ApiResponse.ok(existing, "Product updated successfully")
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
