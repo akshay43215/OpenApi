@@ -43,6 +43,7 @@ function buildForm(payload) {
     const field = document.createElement("div");
 
     const label = document.createElement("label");
+    label.setAttribute("for", key);
     label.textContent = key;
 
     let input;
@@ -52,6 +53,9 @@ function buildForm(payload) {
         input = document.createElement("input");
         input.type = "number";
         input.value = value;
+        input.step="any"
+        input.min="0"
+        input.oninput="this.value = this.value === '' ? '' : parseFloat(this.value)"
         break;
 
       case "boolean":
@@ -66,6 +70,7 @@ function buildForm(payload) {
         input.value = value;
     }
 
+    input.id = key;
     input.dataset.key = key;
 
     field.appendChild(label);
@@ -100,7 +105,13 @@ updateForm.addEventListener("submit", async (e) => {
       value = input.value;
     }
 
-    if (value !== originalPayload[key]) {
+    // 🔥 FIX TAGS
+    if (key === "tags") {
+      value = value.split(",")
+        .map(t => t.trim()).filter(Boolean);
+    }
+
+    if (JSON.stringify(value) !== JSON.stringify(originalPayload[key])) {
       diff[key] = value;
     }
   });
@@ -120,8 +131,22 @@ updateForm.addEventListener("submit", async (e) => {
 
   if (res.ok) {
     statusText.textContent = "Update successful";
-    originalPayload = { ...originalPayload, ...diff };
+    clearUpdateForm();
   } else {
     statusText.textContent = "Update failed";
   }
 });
+
+function clearUpdateForm() {
+  fieldsContainer.querySelectorAll("input").forEach((input) => {
+    switch (input.type) {
+      case "checkbox":
+        input.checked = false;
+        break;
+
+      default:
+        input.value = "";
+    }
+  });
+}
+

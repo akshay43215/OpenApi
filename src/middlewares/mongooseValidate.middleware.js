@@ -23,17 +23,17 @@ export const validatePayload = async(req, res, next) => {
   payload.Asin = payload.Asin.trim().toUpperCase();
 
    // ✅ Correct duplicate check
-  const exists = await AffiliateProduct
-    .findOne({ "payload.Asin": payload.Asin })
-    .lean();
+  // const exists = await AffiliateProduct
+  //   .findOne({ "payload.Asin": payload.Asin })
+  //   .lean();
 
-  if (exists) {
-    return next(
-      new ApiError( 
-        409, `Affiliate product with ASIN ${payload.Asin} already exists`
-      )
-    );
-  }
+  // if (exists) {
+  //   return next(
+  //     new ApiError( 
+  //       409, `Affiliate product with ASIN ${payload.Asin} already exists`
+  //     )
+  //   );
+  // }
   
   next();
 };

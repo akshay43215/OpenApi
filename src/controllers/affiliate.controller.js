@@ -5,6 +5,18 @@ import { ApiError } from "../utils/ApiError.js";
 
 export const createAffiliateProduct = async (req, res, next) => {
   try {
+    const { payload } = req.body;
+  
+    const exists = await AffiliateProduct.countDocuments(
+      { "payload.Asin": payload.Asin },
+      { limit: 1 }
+    );
+  
+    if (exists==1) {
+      return next(
+        new ApiError( 409, `Affiliate product with ASIN ${payload.Asin} already exists`)
+      );
+    }
     const doc = await AffiliateProduct.create(req.body);
     res
       .status(201)
@@ -85,7 +97,7 @@ export const getAffiliateByAsin = async (req, res, next) => {
   try {
     const asin = req.params.asin.trim().toUpperCase();
 
-    const doc = await AffiliateProduct.findOne({ asin }).lean();
+    const doc = await AffiliateProduct.findOne({ "payload.Asin":asin }).lean();
 
     if (!doc) {
       return next(new ApiError(404, "Product not found"));
@@ -99,6 +111,7 @@ export const getAffiliateByAsin = async (req, res, next) => {
 
 export const updateAffiliateProduct = async (req, res, next) => {
   try {
+    
     const asin = req.params.asin.trim().toUpperCase();
     const incomingPayload = req.body.payload;
 
@@ -106,7 +119,7 @@ export const updateAffiliateProduct = async (req, res, next) => {
       return next(new ApiError(400, "payload object required"));
     }
 
-    const existing = await AffiliateProduct.findOne({ asin });
+    const existing = await AffiliateProduct.findOne( { "payload.Asin": asin } );
 
     if (!existing) {
       return next(new ApiError(404, "Product not found"));
