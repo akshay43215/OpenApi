@@ -249,7 +249,7 @@ button:active {
    UTILITIES
 -------------------------------- */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* ------------------------------
@@ -259,4 +259,29 @@ button:active {
   #fields {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* ------------------------------
+   MODE SELECTOR
+-------------------------------- */
+#modeForm {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+#modeForm label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: none;
+}
+
+#modeForm input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
 }

@@ -7,10 +7,32 @@ const statusText = document.getElementById("status");
 let originalPayload = {};
 let currentAsin = "";
 
+let mode = "update";
+
+document.querySelectorAll('input[name="mode"]').forEach(radio => {
+  radio.addEventListener("change", (e) => {
+    mode = e.target.value;
+
+    if (mode === "create") {
+      updateForm.classList.remove("hidden");
+      searchForm.classList.add("hidden");
+      clearUpdateForm();
+      statusText.textContent = "Create new product";
+    } else {
+      updateForm.classList.add("hidden");
+      searchForm.classList.remove("hidden");
+
+      statusText.textContent = "Modify existing product";
+    }
+  });
+});
+
 /* ---------------- SEARCH ---------------- */
 
 searchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  if (mode === "create") return;
 
   const asin = document.getElementById("asin").value.trim().toUpperCase();
   statusText.textContent = "Loading...";
@@ -91,8 +113,7 @@ function isDate(value) {
 updateForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const diff = {};
-
+  const payload = {};
   fieldsContainer.querySelectorAll("input").forEach((input) => {
     const key = input.dataset.key;
     let value;
@@ -105,37 +126,34 @@ updateForm.addEventListener("submit", async (e) => {
       value = input.value;
     }
 
-    // 🔥 FIX TAGS
     if (key === "tags") {
-      value = value.split(",")
-        .map(t => t.trim()).filter(Boolean);
+      value = value.split(",").map(t => t.trim()).filter(Boolean);
     }
 
-    if (JSON.stringify(value) !== JSON.stringify(originalPayload[key])) {
-      diff[key] = value;
+    payload[key] = value;
+  });
+
+    if (mode === "update") {
+      const diff = {};
+
+      Object.keys(payload).forEach(key => {
+        if (JSON.stringify(payload[key]) !== JSON.stringify(originalPayload[key])) {
+          diff[key] = payload[key];
+        }
+      });
+
+      if (!Object.keys(diff).length) {
+        statusText.textContent = "No changes detected";
+        return;
+      }
+
+      diff.Asin = currentAsin;
+
+      await sendRequest("PUT", `/api/v1/data/asin/${currentAsin}`, diff);
+    } else {
+      await sendRequest("POST", `/api/v1/data/`, payload);
     }
   });
-
-  if (!Object.keys(diff).length) {
-    statusText.textContent = "No changes detected";
-    return;
-  }
-  diff['Asin'] = currentAsin; // Ensure ASIN is included in the payload
-  statusText.textContent = "Updating...";
-
-  const res = await fetch(`/api/v1/data/asin/${currentAsin}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ payload: diff }),
-  });
-
-  if (res.ok) {
-    statusText.textContent = "Update successful";
-    clearUpdateForm();
-  } else {
-    statusText.textContent = "Update failed";
-  }
-});
 
 function clearUpdateForm() {
   fieldsContainer.querySelectorAll("input").forEach((input) => {
@@ -150,3 +168,22 @@ function clearUpdateForm() {
   });
 }
 
+async function sendRequest(method, url, payload) {
+  statusText.textContent = "Saving...";
+
+  const res = await fetch(url, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ payload })
+  });
+
+  if (res.ok) {
+    statusText.textContent = method === "POST"
+      ? "Product created successfully"
+      : "Update successful";
+
+    clearUpdateForm();
+  } else {
+    statusText.textContent = "Operation failed";
+  }
+}
