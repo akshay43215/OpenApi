@@ -87,7 +87,18 @@ export const getLatestAffiliateProduct = async (req, res, next) => {
 
     res
       .status(200)
-      .json(ApiResponse.ok(latest, "Latest affiliate product fetched"));
+      .json(ApiResponse.ok(
+        {
+          item: [latest],   // 👈 ALWAYS array (matches fetchAll)
+          pagination: {
+            page: 1,
+            limit: 1,
+            total: 1,
+            totalPages: 1,
+          },
+        },
+        "Latest affiliate product fetched"
+      ));
   } catch (err) {
     next(err);
   }
